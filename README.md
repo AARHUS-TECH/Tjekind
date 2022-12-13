@@ -55,7 +55,7 @@ Det kan nogle gange betale sig at genstarte scriptet.
 Der er lagt et opstarts script i bootup<br />
 [TODO] dentificer hvordan scriptet kører
 
-## Frontend
+
 ## Backend
 Installeret eks. Apache server som er i stand til at køre php-filer. 
 
