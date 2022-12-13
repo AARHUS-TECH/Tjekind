@@ -23,15 +23,11 @@ $inactiveElev = ( isset($_REQUEST['inactiveElev']) && $_REQUEST['inactiveElev']!
 //if(isset($_GET['status'])) virker
 
 if(!empty($_REQUEST['status']) == 0 && isset($_GET['status'])) 
-
 {
 	$user->tjekUd($_REQUEST['id']);
 	Session::flash('admin_success', 'Du tjekkede eleven ud!');
 	Redirect::to('/admin/dashboard.php?y='.$_REQUEST['y'].'&filter='.$_REQUEST['filter']);
 }
-
-//else if($_REQUEST['status'] == 1) 
-
 else if(isset($_REQUEST['status']) == 1) 
 {
 	if (date('Hi') > Config::get('tjek_ind/max'))
@@ -54,13 +50,16 @@ else if(isset($_REQUEST['status']) == 1)
 	<head>
 		<meta charset="UTF-8">
 		<title>Tjek ind | Aarhus Tech SKP</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
-		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="/assets/css/mobile.css">
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
 	</head>
+	
 	<body onload="refreshTable();">
-		<div class="container-fluid">
+		<div class="container-fluid dashboard-mobile">
 			<div class="row">
 				<div class="col" style="margin-top: 50px;">
 					<div class="card card-default">
@@ -85,7 +84,20 @@ else if(isset($_REQUEST['status']) == 1)
 										aria-controls="multiCollapseExample1" 
 										class="btn btn-secondary" 
 									>Vis inaktive</a>
-									<a id="new-instructor-btn" class="btn btn-success" href="opretInstruktoer.php?y=<?php echo $y.'&filter='.$filter; ?>" type="button" class="btn btn-secondary">Opret instruktør</a>
+									<!-- begin: Knap som trigger modal vindue til input for kort data
+								         HTML koden til modal vindue findes længere nede efterfulgt
+										 af JavaScript koden. Benytter ajaxResponse.php og
+										 funtionen ajaxGetData($cardnumber) i User.php -->
+									<a 
+										id="new-instructor-btn" 
+										h ref="opretInstruktoer.php?y=<?php echo $y.'&filter='.$filter; ?>" 
+										type="button" 
+										class="btn btn-success btn-secondary"
+										onclick="" 
+										data-toggle="modal" 
+										data-target="#exampleModalCenter"
+									>Tjek kort</a>
+									<!-- end: -->
 									<a 
 										class="btn btn-success" 
 										id="instructor" 
@@ -99,6 +111,79 @@ else if(isset($_REQUEST['status']) == 1)
 								</div>
 							</center>
 							<br />
+
+							<!-- Modal vindue for at tjekke kort data -->
+							<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLongTitle">Skan kortet</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+
+										<div class="modal-body">
+											<div class="form-group">
+												<input 
+													type="password" 
+													class="form-control" 
+													id="inputCardData" 
+													aria-describedby="emailHelp" 
+													placeholder="Kort data"
+													value=""						
+												>
+												<div 
+													id="cardDataHelp" 
+													class="form-text"
+												>Ingen kortdata</div>
+											</div>
+										</div>
+
+										<div class="modal-footer">
+											<button 
+												type="button" 
+												class="btn btn-secondary" 
+												data-dismiss="modal"
+												onclick="document.getElementById('inputCardData').value='';document.getElementById('cardDataHelp').innerHTML='Ingen kortdata';"
+												>Luk</button>
+											<button 
+												type="submit" 
+												class="btn btn-primary"
+												onclick="(document.getElementById('inputCardData').value != '')?showCardData():'';"
+											>Tjek kort</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<script>
+							function showCardData() {
+								var str = document.getElementById('inputCardData').value;
+								console.log(str);
+
+								if (str.length == 0) {
+								 	document.getElementById("cardDataHelp").innerHTML = "Input feltet er tomt - indgiv kortkode";
+								 	return;
+								} else {
+									document.getElementById("cardDataHelp").innerHTML = "Tjekker kortet op mod databasen";
+
+								 	const xmlhttp = new XMLHttpRequest();
+								 	xmlhttp.onload = function() {
+								 		msg = this.responseText;
+								 		console.log(msg);
+								 		document.getElementById("cardDataHelp").innerHTML = this.responseText;
+								 	}
+
+								 	xmlhttp.open("GET", "/admin/ajaxResponse.php?card=" + str);
+								  	xmlhttp.send();
+								}
+
+								document.getElementById('inputCardData').value='';
+							}
+							</script>
+							<!-- end: Modal vindue -->
+
 							<div class="row">
 								<div class="col">
 									<div class="collapse multi-collapse" id="multiCollapseInstructor">
@@ -122,7 +207,7 @@ else if(isset($_REQUEST['status']) == 1)
 												<tr>
 													<th>Navn</th>
 													<th>Brugernavn</th>
-													<th>Handlinger</th>
+													<th>Handling</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -138,6 +223,9 @@ else if(isset($_REQUEST['status']) == 1)
 													}
 												?>
 												</tr>
+												<tr>
+													<td colspan=3 style="text-align: center"><a class="btn btn-success" href="opretInstruktoer.php?y=<?php echo $y.'&filter='.$filter; ?>" type="button" class="btn btn-secondary">Opret instruktør</a></td>
+												</tr>
 											</tbody>
 											</table>
 										</div>
@@ -149,31 +237,35 @@ else if(isset($_REQUEST['status']) == 1)
 							<div class="col">
 							<div class="card card-body">
 							<h4 class="text-center" style="font-weight: bold;">Aktive Elever</h4>
-							<center><div id="statusFilterHalvSkaerm" style="display: inline-flex; padding-top: 5px; padding-bottom: 10px;">
-								<div id="filterbullet" onclick="flipfilter('all');" style="color: white;">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
-										<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
-									</svg>
-								</div>
+							<center>
+								<div id="statusFilterHalvSkaerm" style="display: inline-flex; padding-top: 5px; padding-bottom: 10px;">
+									<div id="filterbullet" onclick="flipfilter('all');" style="color: white;">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
+											<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
+										</svg>
+									</div>
 
-								<div id="filterbullet" onclick="flipfilter('Tjekket ind');" style="color: green; display: inline-block;">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
-										<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
-									</svg>
+									<div id="filterbullet" onclick="flipfilter('Tjekket ind');" style="color: green; display: inline-block;">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
+											<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
+										</svg>
+									</div>
+									<div id="filterbullet" onclick="flipfilter('Forsinket');" style="color: orange; display: inline-block;">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
+											<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
+										</svg>
+									</div>
+									<div id="filterbullet" onclick="flipfilter('Tjekket ud');" style="color: red; display: inline-block;">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
+											<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
+										</svg>
+									</div>
 								</div>
-								<div id="filterbullet" onclick="flipfilter('Forsinket');" style="color: orange; display: inline-block;">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
-										<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
-									</svg>
-								</div>
-								<div id="filterbullet" onclick="flipfilter('Tjekket ud');" style="color: red; display: inline-block;">
-									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
-										<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
-									</svg>
-								</div>
-							</div></center>					
+							</center>
+							
+							
 							<table id="elevTable" class="table table-hover" unselectable="on" onselectstart="return false">
-								<thead>
+								<thead class="dashboard-mobile">
 									<tr>
 										<th style="width: 30%;">Navn&nbsp;
 											<a id="namesort" role="button" onclick="sort='fornavn';sortDir();">
@@ -201,10 +293,10 @@ else if(isset($_REQUEST['status']) == 1)
 												
 											</a>
 										</th>
-										<th id='statusFuldSkaerm' style="width: 18%; vertical-align: bottom; padding-bottom: unset;">
+										<th id='statusFuldSkaerm' style="width: 18%; vertical-align: top;">
 											<div style="display: inline-block">
 												<div style="display: inline-flex;">Status</div>
-												<div style="display: inline-flex; padding-top: 5px;">
+												<div style="display: inline-flex; padding-top: 3px;">
 													<div id="filterbullet" onclick="flipfilter('all');" style="color: white;">
 														<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 12px; margin-left: 5px;">
 															<path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"/>
@@ -292,7 +384,6 @@ else if(isset($_REQUEST['status']) == 1)
 			</div>
 		</div>
 				
-
 		<script src="/assets/js/jquery.min.js"></script>
 		<script src="/assets/js/popper.js"></script>
 		<script src="/assets/js/bootstrap.min.js"></script>
@@ -310,12 +401,12 @@ else if(isset($_REQUEST['status']) == 1)
 			var urlactive;
 			var urlinactive;
 
-
 			$(document).ready(function(){
 				
 				var inactiveElev = "<?php echo isset($_REQUEST['inactiveElev']); ?>";
 				var y=<?php echo isset($_REQUEST['y'])?$_REQUEST['y']:0; ?>;
 				var instruktoerPopUp = "<?php echo isset($_REQUEST['instruktoerPopUp']); ?>";
+
 				if(inactiveElev == 'checked') {
 
 					document.getElementById("inactivebtn").click();
@@ -325,20 +416,15 @@ else if(isset($_REQUEST['status']) == 1)
 						clearInterval(expandTimer);
 					}
 				}
-				if(instruktoerPopUp == 'ja') {
 
-					document.getElementById("instructor").click();
-
-				}
-				
+				if(instruktoerPopUp == 'ja') { document.getElementById("instructor").click(); }
 				
 				$("#inactivebtn").click(
-					function(){
+					function() {
 						//Set timer to wait for expanding script to end
 						
 						var expandTimer = setInterval(myTimer, 500);
 						
-
 						function myTimer() {
 							//Use a toggle switch as indicator for expanding script status
 							if ($("#inactivebtn").attr("aria-expanded") == "true") {
@@ -389,8 +475,7 @@ else if(isset($_REQUEST['status']) == 1)
 				$("#date_desc").click(function(){
 					$("#date_asc").show();
 					$("#date_desc").hide();
-				});
-			
+				});		
 			});
 
 
@@ -416,6 +501,8 @@ else if(isset($_REQUEST['status']) == 1)
 				//iOS Chrome Hack
 				window.location.assign(url);
 			}
+
+
 			function editStudentIkon(id = 0, status){
 				//var myIndex   = document.getElementById("filterText").selectedIndex;
 				//var myOptions = document.getElementById("filterText").options;
@@ -471,63 +558,13 @@ else if(isset($_REQUEST['status']) == 1)
 			   filterText();
 			}
 
+
 			//Karsten: React to the ? button
 			//
 			$("#question-filter").click(function(){
 				$(".content").hide();
 				$(".show-question").show();
 			});
-
-			
-			
-</script -->  
 		</script>
-		<style>
-			@media (max-width: 640px) {
-				#new-student-btn {
-					display: none;
-					visibility: hidden;
-				}
-				#getTableStatus {
-					display: none;
-					visibility: hidden;
-				}
-				#statusFuldSkaerm {
-					display: none;
-					visibility: hidden;
-				}
-				#statusFilterHalvSkaerm {
-					display: inline-flex;
-					visibility: visible;
-				}
-			}
-			
-			@media (max-width: 539px) {
-				#new-instructor-btn {
-					display: none;
-					visibility: hidden;
-				}
-			}
-			
-			@media (min-width: 640px) {
-				#statusFilterHalvSkaerm {
-					display: none;
-					visibility: hidden;
-				}
-			}
-			
-			@media (max-width: 769px) {
-				/*background: url(/assets/images/background.jpg) no-repeat top left fixed;*/
-				/*background-size: contain;*/
-				
-				/*.container {
-					width: 100%;
-					padding-right: 15px;
-					padding-left: 15px;
-					margin-right: auto;
-					margin-left: auto;
-				}*/
-			}
-		</style>
 	</body>
 </html>

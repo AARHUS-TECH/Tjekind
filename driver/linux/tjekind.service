@@ -1,0 +1,14 @@
+[Unit]
+Description=Tjekind Startup Service
+After=network-online.target nfc-client.target
+
+[Service]
+ExecStart=exec /home/karsten/Desktop/launcher.sh
+WorkingDirectory=/home/karsten/Desktop
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=karsten
+
+[Install]
+WantedBy=multi-user.target

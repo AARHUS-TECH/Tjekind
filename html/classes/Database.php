@@ -1,10 +1,10 @@
 <?php
-
 /**
  * Beskrivelse kommer snarest
  *
  * @author      Benjamin Jørgensen <bj@dunkstormen.dk>
- * @copyright   Aarhus Tech SKP 2017
+ * @copyright   Aarhus Tech SKP 2018
+ * @version     1.2
  */
 
 class Database {
@@ -25,23 +25,34 @@ class Database {
         }
     }
 
+
+    public function __destruct() 
+    {
+        $this->pdo = null;
+    }
+
+
     /**
-    * custom query ,update,delete,insert,or fetch, joining multiple table etc, aritmathic etc
+    * custom query: update, delete, insert or fetch, joining multiple table etc, aritmathic etc
     * @param  string $sql  custom query
-    * @param  array $data associative array
+    * @param  array  $data associative array
     * @return array  recordset
     */
-    public function custom_query( $sql,$data=null) {
+    public function custom_query( $sql,$data=null) 
+    {
         if ($data!==null) {
-        $dat=array_values($data);
+            $dat=array_values($data);
         }
+
         $sel = $this->pdo->prepare( $sql );
         if ($data!==null) {
             $sel->execute($dat);
         } else {
             $sel->execute();
         }
+        
         $sel->setFetchMode( PDO::FETCH_OBJ );
+        
         return $sel;
     }
 
@@ -55,6 +66,7 @@ class Database {
         $this->pdo->beginTransaction();
     }
 
+
     /**
      * commit the transaction.
      */
@@ -64,6 +76,7 @@ class Database {
         $this->pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
     }
 
+
     /**
      * rollback the transaction.
      */
@@ -72,7 +85,6 @@ class Database {
         $this->pdo->rollBack();
         $this->pdo->setAttribute(PDO::ATTR_AUTOCOMMIT, 1);
     }
-
 
 
     /**
@@ -89,8 +101,10 @@ class Database {
         $sel->execute($nilai);
         $sel->setFetchMode( PDO::FETCH_OBJ );
         $obj = $sel->fetch();
+
         return $obj;
     }
+
 
     /**
     * fetch all data
@@ -104,6 +118,8 @@ class Database {
         $sel->setFetchMode( PDO::FETCH_OBJ );
         return $sel;
     }
+
+
     /**
     * fetch multiple row
     * @param  string $table table name
@@ -120,6 +136,7 @@ class Database {
         $sel->setFetchMode( PDO::FETCH_OBJ );
         return $sel;
     }
+
 
     /**
     * fetch row with condition
@@ -148,6 +165,7 @@ class Database {
           $im=implode('', $mark);
              $sel = $this->pdo->prepare("SELECT $colum from $table WHERE $im");
         }
+
         $sel->execute( $data );
         $sel->setFetchMode( PDO::FETCH_OBJ );
         return  $sel;
@@ -164,11 +182,11 @@ class Database {
     */
     public function fetch_multi_row_order($table,$col,$where,$order,$index)
     {
-
         $data = array_values( $where );
         //grab keys
         $cols=array_keys($where);
         $colum=implode(', ', $col);
+
         foreach ($cols as $key) {
           $keys=$key."=?";
           $mark[]=$keys;
@@ -182,10 +200,13 @@ class Database {
           $im=implode('', $mark);
              $sel = $this->pdo->prepare("SELECT $colum from $table WHERE $im ORDER BY $order $index");
         }
+
         $sel->execute( $data );
         $sel->setFetchMode( PDO::FETCH_OBJ );
+        
         return  $sel;
     }
+
 
     /**
     * check if there is exist data
@@ -222,6 +243,8 @@ class Database {
             return false;
         }
     }
+
+
     /**
     * search data
     * @param  string $table table name
@@ -254,8 +277,10 @@ class Database {
 
         $sel->execute($value);
         $sel->setFetchMode( PDO::FETCH_OBJ );
+
         return  $sel;
     }
+
 
     /**
      * get last insert id
@@ -266,12 +291,14 @@ class Database {
         return $this->pdo->lastInsertId();
     }
 
+
     /**
     * insert data to table
     * @param  string $table table name
     * @param  array $dat   associative array 'column_name'=>'val'
     */
-    public function insert($table,$dat) {
+    public function insert($table,$dat) 
+    {
 
         if( $dat !== null )
         $data = array_values( $dat );
@@ -285,11 +312,12 @@ class Database {
           $keys='?';
           $mark[]=$keys;
         }
+
         $im=implode(', ', $mark);
         $ins = $this->pdo->prepare("INSERT INTO $table ($col) values ($im)");
         $ins->execute( $data );
-
     }
+
 
     /**
     * update record
@@ -313,6 +341,7 @@ class Database {
         $ins->execute( $data );
     }
 
+    
     /**
     * delete record
     * @param  string $table table name
@@ -323,10 +352,6 @@ class Database {
         $data = array( $id );
         $sel = $this->pdo->prepare("Delete from $table where $where=?" );
         $sel->execute( $data );
-    }
-
-    public function __destruct() {
-    $this->pdo = null;
     }
 }
 

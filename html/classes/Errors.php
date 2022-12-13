@@ -15,6 +15,7 @@ class Errors {
         return false;
     }
 
+    
     public static function getSuccessMessage($session) {
         if(Session::exists($session)) {
             $message  = '<div class="alert alert-dismissible alert-success">';

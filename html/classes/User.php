@@ -25,7 +25,6 @@
 		 *
 		 *  @return boolean 
 		 */
-
 		public function exists($value) {
 			// Tjek om $value har en værdi
 			if(!empty($value)) {
@@ -68,7 +67,6 @@
 			}
 
 			return false;
-
 		}
 
 		/**
@@ -79,7 +77,6 @@
 		 *  @param $magnetstribe	Strengen fra elevens tjek ind kort
 		 *
 		 */
-
 		public function opretElev($fornavn, $efternavn, $magnetstribe) {
 			// Tjek om alle felter er udfyldte
 			if(!empty($fornavn) && !empty($efternavn) && !empty($magnetstribe)) {
@@ -114,17 +111,17 @@
 			}
 		}
 
+
 		/**
 		 *  Opret en ny instruktør i systemet
 		 *
-		 *  @param $fornavn		 Instruktørens fornavn og mellemnavn(e)
-		 *  @param $efternavn	   Instruktørens efternavn
+		 *  @param $fornavn			Instruktørens fornavn og mellemnavn(e)
+		 *  @param $efternavn		Instruktørens efternavn
 		 *  @param $magnetstribe	Strengen fra instruktørens medarbejder kort
-		 *  @param $brugernavn	  Instruktørens brugernavn
+		 *  @param $brugernavn	  	Instruktørens brugernavn
 		 *  @param $password		Instruktørens adgangskode
 		 *
 		 */
-
 		public function opretInstruktoer($fornavn, $efternavn, $brugernavn, $password, $magnetstribe) {
 			// Tjekker om alle felter er udfyldt
 			if(!empty($fornavn) && !empty($efternavn) && !empty($brugernavn) && !empty($password) && isset($magnetstribe)) {
@@ -168,6 +165,7 @@
 			}
 		}
 
+
 		public function update($userID, $fornavn, $efternavn, $brugernavn, $password = null, $magnetstribe, $iSKP, $bemning = null) {
 			if(!$password == null) {
 				$data = array(
@@ -194,30 +192,33 @@
 			
 			$sql = "SELECT user_level FROM tjekind_brugere WHERE userID=?";
 			$bindings = array($userID);
-
-			$result = $this->_db->custom_query($sql,$bindings);
+			$result = $this->_db->custom_query($sql, $bindings);
 			foreach ($result as $row){
 				$user_level = $row->user_level;
 			}
+
 			$this->_db->update('tjekind_brugere', $data, 'userID', $userID);
 			Session::flash('admin_success', 'Du redigerede brugeren <b>' . $data['fornavn'] . ' ' . $data['efternavn'] . '</b>!');
 			if ($user_level == 1){
 				Redirect::to('/admin/dashboard.php?instruktoerPopUp=ja');
 			}
+
 			if ($iSKP != 1){
 				//Scroller ned til SKP eleven som er redigeret
 				Redirect::to('/admin/dashboard.php?y='.$_REQUEST['y'].'&filter='.$_REQUEST['filter']);
 			}
+			
 			if ($iSKP == 1){
 				//Scroller ned til ikke-SKP eleven som er redigeret
 				Redirect::to('/admin/dashboard.php?y='.$_REQUEST['y'].'&filter='.$_REQUEST['filter'].'&inactiveElev=checked');
 			}
-
 		}
+
 
 		public function delete($id) {
 			$this->_db->delete('tjekind_brugere', 'id', $id);
 		}
+
 
 		public function auth() {
 
@@ -243,11 +244,13 @@
 						Session::flash('index_error', 'Det brugte kort er ugyldigt!');
 						Redirect::to('/');
 					}
+
 				} else if(Input::get('brugernavn')) {
 					$this->login(Input::get('brugernavn'), Input::get('adgangskode'));
 				}
 			}
 		}
+
 
 		private function login($value1, $value2 = null) {
 			if(!$value2) {
@@ -283,7 +286,6 @@
 					Redirect::to('/');
 				}
 
-				//[TODO] Indføre splash skærm for instruktører. Splash skærmen skal give valg mellem at instruktøren kan tjekke ind eller gå til redigering (dashboard)
 				if($this->isAdmin($userID)) {
 					$_SESSION['userID'] = $userID;
 					Redirect::to('/admin/dashboard.php');
@@ -335,7 +337,7 @@
 					} else {
 						Redirect::to('/elev/');
 					}
-					
+
 				}
 			} else {
 				$sql = "SELECT userID, password, status FROM tjekind_brugere WHERE brugernavn=? LIMIT 1";
@@ -365,6 +367,12 @@
 			}
 		}
 		
+		
+		/********************************************//**
+		 * @name		createLogStart()
+		 * @param		userID
+		 * @description	
+		 ***********************************************/
 		public function createLogStart($userID) {
 			$sqlTjekindBrugere = "SELECT * FROM tjekind_brugere WHERE userID=?";
 			$bindings = array($userID);
@@ -385,6 +393,7 @@
 					$sqlUpdate = "UPDATE tjekind_historik SET userID='$userID', fornavn='$fornavn', efternavn='$efternavn', start='$start' WHERE userID='$userID' AND start='$start'";
 				}
 			}
+			
 			if ($userID != $row->userID && $start != $row->start || $userID == $row->userID && $start != $row->start){
 				$this->_db->custom_query($sqlInsert);
 			} else {
@@ -392,6 +401,12 @@
 			}
 			
 		}
+		
+		/********************************************//**
+		 * @name		createLogSlut()
+		 * @param		userID
+		 * @description	
+		 ***********************************************/		
 		public function createLogSlut($userID) {
 			$sqlTjekudBrugere = "SELECT * FROM tjekind_brugere WHERE userID=?";
 			$bindings = array($userID);
@@ -421,6 +436,7 @@
 				$this->_db->custom_query($sqlUpdate);
 			}
 		}
+
 
 		public function changeStatus($userID, $status) {
 			switch($status) {
@@ -486,12 +502,14 @@
 
 		}
 
+
 		public function getAllElever() {
 			$sql = "SELECT * FROM tjekind_brugere WHERE user_level='0' AND iSKP='0' ORDER BY ".$this->sorting." ".$this->sortdirection;
 			//echo "<script>console.log(\"$sql\")</script>";
 	
 			return $this->_db->custom_query($sql);
 		}
+
 
 		public function getAllNotActiveElever() {
 			$sql = "SELECT * FROM tjekind_brugere WHERE user_level='0' AND iSKP='1' ORDER BY ".$this->sorting." ".$this->sortdirection;

@@ -12,8 +12,11 @@ $user->auth();
         <meta charset="utf-8">
         <title>Tjek ind | Aarhus Tech SKP</title>
 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="/assets/css/custom.css">
+        <link rel="stylesheet" type="text/css" href="/assets/css/mobile.css">
+
         <script>
             function startTime() {
                 var today = new Date();
@@ -26,12 +29,14 @@ $user->auth();
                 "- " + h + ":" + m + ":" + s + " -";
                 var t = setTimeout(startTime, 500);
             }
+
             function checkTime(i) {
                 if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
                 return i;
             }
         </script>
     </head>
+    
     <body onload="startTime();">
     <div class="container">
         <div class="row vcenter">
