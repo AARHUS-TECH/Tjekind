@@ -5,11 +5,12 @@ Vores egen producerede tjek ind system. Er skrevet i php og driver til at læse 
 Systemet har driver til NFC læseren til både Windows og Linux. Driverne er testen og fungerer på Windows 10 og Raspberry Pi linux, Raspbarian
 
 ### Python afhængigheder
+## nfcpy bibliotek
+Dokumentation: https://nfcpy.readthedocs.io/en/latest/modules/clf.html
+
 Driveren gør brug af Python biblioteket: nfcpy
 
-Det nemmeste er at følge vejledning på færste opsætning af 
-
-Se nærmere dokumentation på: https://nfcpy.readthedocs.io/en/latest/topics/get-started.html
+Det nemmeste er at følge vejledning på første opsætning af 
 
     pip install -U nfcpy
 
@@ -33,7 +34,10 @@ Se nærmere dokumentation på: https://nfcpy.readthedocs.io/en/latest/topics/get
         Running setup.py install for pydes ... done
     Successfully installed libusb1-2.0.1 ndeflib-0.3.3 nfcpy-1.0.3 pydes-2.0.1 pyserial-3.5
 
-... og pynput biblioteket: 
+## libusb1 bibliotek
+https://github.com/vpelletier/python-libusb1
+
+## pynput biblioteket
 Se nærmere dokumentation på: https://pynput.readthedocs.io/en/latest/
 
     > pip pynput
@@ -50,12 +54,6 @@ Det kan nogle gange betale sig at genstarte scriptet.
 
 Der er lagt et opstarts script i bootup<br />
 [TODO] dentificer hvordan scriptet kører
-
-## nfcpy bibliotek
-Dokumentation: https://nfcpy.readthedocs.io/en/latest/modules/clf.html
-
-## libusb1 bibliotek
-https://github.com/vpelletier/python-libusb1
 
 ## Frontend
 ## Backend
@@ -83,7 +81,6 @@ Til database er der brugt MySQL. Den kører stadig i sin gamle version: 0.00.
 
 phpMyAdmin
   Versionsinformation: 4.6.6deb5
-
 
 # Apache webserver
 Apache/2.4.38 (Raspbian)
