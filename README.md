@@ -49,7 +49,7 @@ Se nærmere dokumentation på: https://pynput.readthedocs.io/en/latest/
       Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
     Successfully installed pynput-1.7.3 six-1.16.0
 
-Python scriptet kører Python2 og kan være meget wonky i forhold til NFC læseren.<br />
+Python scriptet er opgraderet fra at kører Python2 og har fungerer med de seneste opdateringer i forhold til NFC læseren.<br />
 Det kan nogle gange betale sig at genstarte scriptet.
 
 Der er lagt et opstarts script i bootup<br />
