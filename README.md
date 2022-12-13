@@ -94,10 +94,3 @@ PHP-version: 7.3.11-1~deb10u1
 
 # Hardware krav
 Der er krav til at bruge, det eneste som driveren understøtter nu.
-
-# Teori
-![image](https://user-images.githubusercontent.com/44589560/205251816-393ba83d-9f90-4c09-baa5-b83ae5e83dc9.png)
-
-
-
-
