@@ -55,6 +55,31 @@ Det kan nogle gange betale sig at genstarte scriptet.
 Der er lagt et opstarts script i bootup<br />
 [TODO] dentificer hvordan scriptet kører
 
+## Backend
+### Opsætning af service
+    sudo nano /lib/systemd/system/kiosk.service
+
+```
+
+[Unit]
+Description=Chromium Kiosk
+Wants=graphical.target
+After=graphical.target
+
+[Service]
+Environment=DISPLAY=:0.0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+Type=simple
+ExecStart=/bin/bash /home/pi/Desktop/kiosk.sh
+Restart=on-abort
+User=pi
+Group=pi
+
+[Install]
+WantedBy=graphical.target
+
+```
+
 
 ## Backend
 Installeret eks. Apache server som er i stand til at køre php-filer. 
