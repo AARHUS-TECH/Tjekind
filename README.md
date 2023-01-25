@@ -118,10 +118,10 @@ PHP-version: 7.3.11-1~deb10u1
 Der er krav til at bruge, det eneste som driveren understøtter nu.
 
 # Installering på Raspberry Pi
-Gå til home dir for websiden
+Gå til home dir for websiden<br />
     cd /var/www/
 
-Nu kan koden installeres med
+Nu kan koden installeres med:<br />
     sudo git clone https://github.com/AARHUS-TECH/Tjekind.git
 
 ```
