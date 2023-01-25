@@ -41,14 +41,27 @@ https://github.com/vpelletier/python-libusb1
 ## pynput biblioteket
 Se nærmere dokumentation på: https://pynput.readthedocs.io/en/latest/
 
-    > pip pynput
-    ERROR: unknown command "pynput"
-    Collecting pynput
-      Downloading pynput-1.7.3-py2.py3-none-any.whl (99 kB)
-         |████████████████████████████████| 99 kB 607 kB/s 
-    Collecting six
-      Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
-    Successfully installed pynput-1.7.3 six-1.16.0
+    pip install pynput
+
+```
+Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
+Collecting pynput
+  Downloading https://www.piwheels.org/simple/pynput/pynput-1.7.6-py2.py3-none-any.whl (79 kB)
+     |████████████████████████████████| 79 kB 546 kB/s 
+Collecting evdev>=1.3
+  Downloading evdev-1.6.1.tar.gz (26 kB)
+Requirement already satisfied: six in /usr/lib/python3/dist-packages (from pynput) (1.16.0)
+Collecting python-xlib>=0.17
+  Downloading https://www.piwheels.org/simple/python-xlib/python_xlib-0.33-py2.py3-none-any.whl (182 kB)
+     |████████████████████████████████| 182 kB 844 kB/s 
+Building wheels for collected packages: evdev
+  Building wheel for evdev (setup.py) ... done
+  Created wheel for evdev: filename=evdev-1.6.1-cp39-cp39-linux_aarch64.whl size=83633 sha256=c1a305ca361af160d6d2380bb04e4d3cb6effd7c7a7c6b5dc89cf4d4a44c21d3
+  Stored in directory: /home/pi/.cache/pip/wheels/d9/dc/a9/bd9d84b0819a9858095ba3c033bddf84c9a6d8b360fe0a3caf
+Successfully built evdev
+Installing collected packages: python-xlib, evdev, pynput
+Successfully installed evdev-1.6.1 pynput-1.7.6 python-xlib-0.33
+```
 
 Python scriptet er opgraderet fra at kører Python2 og har fungerer med de seneste opdateringer i forhold til NFC læseren.<br />
 Det kan nogle gange betale sig at genstarte scriptet.
