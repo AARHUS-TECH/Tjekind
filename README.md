@@ -135,10 +135,14 @@ Resolving deltas: 100% (173/173), done.
 ```
 
 Til sidst åbnes Apache konfigurations fil og ændres til at pege på vores hjemmeside:<br />
+
     DocumentRoot /var/www/html
+
 ændres til 
+
     DocumentRoot /var/www/Tjekind/html
 
 og Apache genstartes
+
     sudo service apache2 restart
 
