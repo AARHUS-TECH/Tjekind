@@ -133,3 +133,10 @@ remote: Total 396 (delta 173), reused 358 (delta 154), pack-reused 0
 Receiving objects: 100% (396/396), 23.06 MiB | 1.13 MiB/s, done.
 Resolving deltas: 100% (173/173), done.
 ```
+
+Til sidst åbnes Apache konfigurations fil og ændres til at pege på vores hjemmeside:<br />
+    DocumentRoot /var/www/html
+ændres til 
+    DocumentRoot /var/www/Tjekind/html
+
+
