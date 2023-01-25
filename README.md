@@ -139,4 +139,6 @@ Til sidst åbnes Apache konfigurations fil og ændres til at pege på vores hjem
 ændres til 
     DocumentRoot /var/www/Tjekind/html
 
+og Apache genstartes
+    sudo service apache2 restart
 
