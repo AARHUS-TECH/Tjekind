@@ -67,7 +67,7 @@ Python scriptet er opgraderet fra at kører Python2 og har fungerer med de senes
 Det kan nogle gange betale sig at genstarte scriptet.
 
 Der er lagt et opstarts script i bootup<br />
-[TODO] dentificer hvordan scriptet kører
+[TODO] Hvordan opsætter man cronjob til at igang sætte driver- og python fortolker script
 
 ## Backend
 ### Opsætning af service
