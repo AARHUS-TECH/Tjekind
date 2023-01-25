@@ -35,6 +35,7 @@ Det nemmeste er at følge vejledning på første opsætning af
     Successfully installed libusb1-2.0.1 ndeflib-0.3.3 nfcpy-1.0.3 pydes-2.0.1 pyserial-3.5
 
 ## libusb1 bibliotek
+libusb burde blive installeret sammen med nfcpy. Hvis ikke kandu se på:
 https://github.com/vpelletier/python-libusb1
 
 ## pynput biblioteket
