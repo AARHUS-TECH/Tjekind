@@ -116,3 +116,20 @@ PHP-version: 7.3.11-1~deb10u1
 
 # Hardware krav
 Der er krav til at bruge, det eneste som driveren understøtter nu.
+
+# Installering på Raspberry Pi
+Gå til home dir for websiden
+    cd /var/www/
+
+Nu kan koden installeres med
+    sudo git clone https://github.com/AARHUS-TECH/Tjekind.git
+
+```
+Cloning into 'Tjekind'...
+remote: Enumerating objects: 396, done.
+remote: Counting objects: 100% (396/396), done.
+remote: Compressing objects: 100% (227/227), done.
+remote: Total 396 (delta 173), reused 358 (delta 154), pack-reused 0
+Receiving objects: 100% (396/396), 23.06 MiB | 1.13 MiB/s, done.
+Resolving deltas: 100% (173/173), done.
+```
