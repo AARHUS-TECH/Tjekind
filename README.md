@@ -1,16 +1,20 @@
 # Tjekind
+
 Vores egen producerede tjek ind system. Er skrevet i php og driver til at læse kortene er skrevet i python
 
 ## Driver
+
 Systemet har driver til NFC læseren til både Windows og Linux. Driverne er testen og fungerer på Windows 10 og Raspberry Pi linux, Raspbarian
 
 ### Python afhængigheder
+
 ## nfcpy bibliotek
-Dokumentation: https://nfcpy.readthedocs.io/en/latest/modules/clf.html
+
+Dokumentation: <https://nfcpy.readthedocs.io/en/latest/modules/clf.html>
 
 Driveren gør brug af Python biblioteket: nfcpy
 
-Det nemmeste er at følge vejledning på første opsætning af 
+Det nemmeste er at følge vejledning på første opsætning af
 
     pip install -U nfcpy
 
@@ -35,15 +39,18 @@ Det nemmeste er at følge vejledning på første opsætning af
     Successfully installed libusb1-2.0.1 ndeflib-0.3.3 nfcpy-1.0.3 pydes-2.0.1 pyserial-3.5
 
 ## libusb1 bibliotek
+
 libusb burde blive installeret sammen med nfcpy. Hvis ikke kandu se på:
-https://github.com/vpelletier/python-libusb1
+<https://github.com/vpelletier/python-libusb1>
 
 ## pynput biblioteket
-Se nærmere dokumentation på: https://pynput.readthedocs.io/en/latest/
+
+Se nærmere dokumentation på: <https://pynput.readthedocs.io/en/latest/>
 
     pip install pynput
 
 ```
+
 Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
 Collecting pynput
   Downloading https://www.piwheels.org/simple/pynput/pynput-1.7.6-py2.py3-none-any.whl (79 kB)
@@ -61,6 +68,7 @@ Building wheels for collected packages: evdev
 Successfully built evdev
 Installing collected packages: python-xlib, evdev, pynput
 Successfully installed evdev-1.6.1 pynput-1.7.6 python-xlib-0.33
+
 ```
 
 Python scriptet er opgraderet fra at kører Python2 og har fungerer med de seneste opdateringer i forhold til NFC læseren.<br />
@@ -70,7 +78,9 @@ Der er lagt et opstarts script i bootup<br />
 [TODO] Hvordan opsætter man cronjob til at igang sætte driver- og python fortolker script
 
 ## Backend
+
 ### Opsætning af service
+
     sudo nano /lib/systemd/system/kiosk.service
 
 ```
@@ -94,9 +104,9 @@ WantedBy=graphical.target
 
 ```
 
-
 ## Backend
-Installeret eks. Apache server som er i stand til at køre php-filer. 
+
+Installeret eks. Apache server som er i stand til at køre php-filer.
 
   Webserver
   Apache/2.4.38 (Raspbian)
@@ -107,6 +117,7 @@ Installeret eks. Apache server som er i stand til at køre php-filer.
 Der er lavet et opstart script som kører efter boot sekvensen.
 
 ## Database
+
 Databaseklientversion: libmysql - mysqlnd 5.0.12-dev - 20150407 - $Id: 7cc7cc96e675f6d72e5cf0f267f48e167c2abb23 $
 Til database er der brugt MySQL. Den kører stadig i sin gamle version: 0.00.
 
@@ -122,21 +133,25 @@ phpMyAdmin
   Versionsinformation: 4.6.6deb5
 
 # Apache webserver
+
 Apache/2.4.38 (Raspbian)
 
 # PHP
+
 PHP-udvidelse: mysqliDokumentation curlDokumentation mbstringDokumentation
 PHP-version: 7.3.11-1~deb10u1
 
 # Hardware krav
+
 Der er krav til at bruge, det eneste som driveren understøtter nu.
 
 # Installering på Raspberry Pi
+
 Gå til home dir for websiden<br />
     cd /var/www/
 
 Nu kan koden installeres med:<br />
-    sudo git clone https://github.com/AARHUS-TECH/Tjekind.git
+    sudo git clone <https://github.com/AARHUS-TECH/Tjekind.git>
 
 ```
 Cloning into 'Tjekind'...
@@ -152,11 +167,10 @@ Til sidst åbnes Apache konfigurations fil og ændres til at pege på vores hjem
 
     DocumentRoot /var/www/html
 
-ændres til 
+ændres til
 
     DocumentRoot /var/www/Tjekind/html
 
 og Apache genstartes
 
     sudo service apache2 restart
-
