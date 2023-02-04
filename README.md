@@ -35,25 +35,39 @@ Det nemmeste er at følge vejledning på første opsætning af
     Successfully installed libusb1-2.0.1 ndeflib-0.3.3 nfcpy-1.0.3 pydes-2.0.1 pyserial-3.5
 
 ## libusb1 bibliotek
+libusb burde blive installeret sammen med nfcpy. Hvis ikke kandu se på:
 https://github.com/vpelletier/python-libusb1
 
 ## pynput biblioteket
 Se nærmere dokumentation på: https://pynput.readthedocs.io/en/latest/
 
-    > pip pynput
-    ERROR: unknown command "pynput"
-    Collecting pynput
-      Downloading pynput-1.7.3-py2.py3-none-any.whl (99 kB)
-         |████████████████████████████████| 99 kB 607 kB/s 
-    Collecting six
-      Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
-    Successfully installed pynput-1.7.3 six-1.16.0
+    pip install pynput
+
+```
+Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
+Collecting pynput
+  Downloading https://www.piwheels.org/simple/pynput/pynput-1.7.6-py2.py3-none-any.whl (79 kB)
+     |████████████████████████████████| 79 kB 546 kB/s 
+Collecting evdev>=1.3
+  Downloading evdev-1.6.1.tar.gz (26 kB)
+Requirement already satisfied: six in /usr/lib/python3/dist-packages (from pynput) (1.16.0)
+Collecting python-xlib>=0.17
+  Downloading https://www.piwheels.org/simple/python-xlib/python_xlib-0.33-py2.py3-none-any.whl (182 kB)
+     |████████████████████████████████| 182 kB 844 kB/s 
+Building wheels for collected packages: evdev
+  Building wheel for evdev (setup.py) ... done
+  Created wheel for evdev: filename=evdev-1.6.1-cp39-cp39-linux_aarch64.whl size=83633 sha256=c1a305ca361af160d6d2380bb04e4d3cb6effd7c7a7c6b5dc89cf4d4a44c21d3
+  Stored in directory: /home/pi/.cache/pip/wheels/d9/dc/a9/bd9d84b0819a9858095ba3c033bddf84c9a6d8b360fe0a3caf
+Successfully built evdev
+Installing collected packages: python-xlib, evdev, pynput
+Successfully installed evdev-1.6.1 pynput-1.7.6 python-xlib-0.33
+```
 
 Python scriptet er opgraderet fra at kører Python2 og har fungerer med de seneste opdateringer i forhold til NFC læseren.<br />
 Det kan nogle gange betale sig at genstarte scriptet.
 
 Der er lagt et opstarts script i bootup<br />
-[TODO] dentificer hvordan scriptet kører
+[TODO] Hvordan opsætter man cronjob til at igang sætte driver- og python fortolker script
 
 ## Backend
 ### Opsætning af service
@@ -116,3 +130,33 @@ PHP-version: 7.3.11-1~deb10u1
 
 # Hardware krav
 Der er krav til at bruge, det eneste som driveren understøtter nu.
+
+# Installering på Raspberry Pi
+Gå til home dir for websiden<br />
+    cd /var/www/
+
+Nu kan koden installeres med:<br />
+    sudo git clone https://github.com/AARHUS-TECH/Tjekind.git
+
+```
+Cloning into 'Tjekind'...
+remote: Enumerating objects: 396, done.
+remote: Counting objects: 100% (396/396), done.
+remote: Compressing objects: 100% (227/227), done.
+remote: Total 396 (delta 173), reused 358 (delta 154), pack-reused 0
+Receiving objects: 100% (396/396), 23.06 MiB | 1.13 MiB/s, done.
+Resolving deltas: 100% (173/173), done.
+```
+
+Til sidst åbnes Apache konfigurations fil og ændres til at pege på vores hjemmeside:<br />
+
+    DocumentRoot /var/www/html
+
+ændres til 
+
+    DocumentRoot /var/www/Tjekind/html
+
+og Apache genstartes
+
+    sudo service apache2 restart
+
