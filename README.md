@@ -84,7 +84,6 @@ Der er lagt et opstarts script i bootup<br />
     sudo nano /lib/systemd/system/kiosk.service
 
 ```
-
 [Unit]
 Description=Chromium Kiosk
 Wants=graphical.target
@@ -101,11 +100,16 @@ Group=pi
 
 [Install]
 WantedBy=graphical.target
-
 ```
 
+service filen skal sættes til at starte ved boot
+
+    sudo systemctl enable kiosk.service
+
 og så skal service startes
-  sudo systemctl start kiosk
+
+    sudo systemctl start kiosk
+    
 
 ## Backend
 
