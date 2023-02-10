@@ -104,8 +104,12 @@ WantedBy=graphical.target
 
 ```
 
+service filen skal sættes til at starte ved boot
+    sudo systemctl enable kiosk.service
+
 og så skal service startes
-  sudo systemctl start kiosk
+    sudo systemctl start kiosk
+    
 
 ## Backend
 
