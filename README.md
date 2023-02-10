@@ -104,6 +104,9 @@ WantedBy=graphical.target
 
 ```
 
+og så skal service startes
+  sudo systemctl start kiosk
+
 ## Backend
 
 Installeret eks. Apache server som er i stand til at køre php-filer.
