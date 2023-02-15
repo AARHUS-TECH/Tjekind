@@ -2,6 +2,17 @@
 
 Vores egen producerede tjek ind system. Er skrevet i php og driver til at læse kortene er skrevet i python
 
+## Hardware 
+![image](https://user-images.githubusercontent.com/44589560/219015631-57ad7342-0d65-428b-94c8-bff49de58ee1.png)
+
+Vi har benytter ACR122U USB NFC Reader fra ACS
+
+Driver til hardware  til Raspberry Pi:
+
+http://www.acs.com.hk/en/products/3/acr122u-usb-nfc-reader/
+
+
+
 ## Driver
 
 Systemet har driver til NFC læseren til både Windows og Linux. Driverne er testen og fungerer på Windows 10 og Raspberry Pi linux, Raspbarian
